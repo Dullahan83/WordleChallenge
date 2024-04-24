@@ -1,0 +1,17 @@
+===> Context:
+    - GameContext
+
+===> Composants:
+    - GameBoard
+    - GuessContainer
+    - GuessRow
+    - GuessCell
+    - Keyboard
+    - KeyboardRow
+    - KeyboardCell
+    
+===> Hooks:
+    - useRandomWord (args: wordArray)
+    - useGame (args: choosenWord)
+    - useKeyboard? 
+    

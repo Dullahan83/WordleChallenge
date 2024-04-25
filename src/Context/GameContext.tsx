@@ -32,6 +32,7 @@ import {
   useState,
 } from "react";
 import useRandomWord from "../Hooks/useRandomWord";
+import useSoundPlaying from "../Hooks/useSoundPlaying";
 import { GameStatus } from "../Utils/types";
 import { MOTS } from "../assets/wordlist";
 import { ModalContext } from "./ModalContext";
@@ -47,7 +48,9 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const [gameState, setGameState] = useState<GameStatus>("playing");
   const [usedLetters, setUsedLetters] = useState([""]);
   const [isExploding, setIsExploding] = useState(false);
-  const animationTiming = 400;
+  const animationTiming = 300;
+
+  const { playSound } = useSoundPlaying();
 
   const handleNewRound = useCallback(() => {
     const newWord = randomizeWord();
@@ -85,6 +88,23 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     setIsExploding(true);
   };
 
+  const verifyLetterState = (letter: string, index: number) => {
+    let letterState = "";
+    if (!word.includes(letter)) {
+      letterState = "absent";
+    } else if (word[index] === letter) {
+      letterState = "correct";
+    } else letterState = "incorrect";
+    return letterState;
+  };
+
+  const handleLetterSounds = () => {
+    for (let i = 0; i < guessWord[turn].length; i++) {
+      const letter = guessWord[turn][i];
+      playSound(verifyLetterState(letter, i), (i + 1) * animationTiming);
+    }
+  };
+
   const handleModal = (explode?: boolean) => {
     handleTypeChange("menu");
     explode
@@ -98,13 +118,16 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const validateAttempt = useCallback(
     (index: number) => {
       if (guessWord[turn].length !== word.length) return;
+      handleLetterSounds();
       setTurn((prev) => prev + 1);
       if (guessWord[index] === word) {
         setGameState("won");
         handleModal(true);
+        playSound("won", (word.length + 1) * animationTiming);
       } else if (turn === 5 && guessWord[index] !== word) {
         setGameState("lost");
         handleModal();
+        playSound("lost", (word.length + 1) * animationTiming);
       } else {
         setGuessWord((prev) => [...prev, ""]);
       }

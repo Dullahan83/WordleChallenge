@@ -56,7 +56,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
   const { playSound } = useSoundPlaying();
   useEffect(() => {
-    console.log(`Pour ne pas paraître nul, tapez: ${word}`);
+    console.log(`Pour ne pas paraître nul, tapez: ${word.toUpperCase()}`);
   }, [word]);
 
   const handleNewRound = useCallback(() => {

@@ -7,6 +7,7 @@ const GuessRow = ({ active, row }: { active: boolean; row: number }) => {
   const rowWord = guessWord[row];
   const arrColors: string[] = new Array(word.length).fill(" ");
 
+  //  Sad recursive attempt, too much modifications trying to cover all cases
   // const evalWord = (
   //   guess: string[],
   //   target: string[],
@@ -50,6 +51,7 @@ const GuessRow = ({ active, row }: { active: boolean; row: number }) => {
   //     return evalWord(tempGuess, temp, result, i + 1, length);
   //   }
   // };
+
   const evalWord = (
     guess: string[],
     target: string[],
@@ -58,25 +60,22 @@ const GuessRow = ({ active, row }: { active: boolean; row: number }) => {
   ) => {
     if (!guess || i === guess.length) return result;
 
-    // Copie temporaire du mot cible pour garder trace des lettres déjà utilisées
     const tempTarget = [...target];
 
-    // D'abord, identifier toutes les lettres bien placées
     guess.forEach((letter, index) => {
       if (letter === tempTarget[index]) {
         result[index] = "green";
-        tempTarget[index] = "_"; // Marquer comme utilisée
+        tempTarget[index] = "_";
         guess[index] = "_";
       }
     });
 
-    // Ensuite, pour chaque lettre, déterminer si elle est mal placée
     guess.forEach((letter, index) => {
       if (letter !== "_") {
         const foundIndex = tempTarget.indexOf(letter);
         if (foundIndex !== -1) {
           result[index] = "yellow";
-          tempTarget[foundIndex] = "_"; // Marquer comme utilisée
+          tempTarget[foundIndex] = "_";
         } else {
           result[index] = "grey";
         }

@@ -17,9 +17,9 @@ const KeyboardCell = ({ content, ...props }: KeyboardCellProps) => {
     <button
       {...props}
       className={cn(
-        `size-14 uppercase text-2xl bg-inherit rounded-lg transition-colors duration-[${animationTiming}ms] delay-[${delay}ms] border text-center place-content-center border-gray-300`,
+        `size-[34px] sm:size-14 origin-center relative uppercase group hover:delay-0 hover:duration-150 hover:bg-current/15 overflow-clip group active:scale-[98.5%] text-base sm:text-2xl bg-inherit rounded-lg transition-colors duration-[${animationTiming}ms] delay-[${delay}ms] border text-center place-content-center border-gray-300`,
         {
-          "bg-yellow-500": isUsed,
+          "bg-yellow-500 ": isUsed,
           "bg-green-500": isValid,
           "bg-white/15": isUsed && !word.includes(content),
           "bg-inherit": !usedLetters.includes(content) || turn === 0,

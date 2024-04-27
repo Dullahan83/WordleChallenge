@@ -18,8 +18,8 @@ const GameBoard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-around py-10 h-screen bg-dark text-white">
-      <header className=" w-3/6 flex justify-center items-center relative">
+    <div className="flex flex-col items-center justify-between sm:justify-around pt-2 sm:py-10 h-screen bg-dark text-white">
+      <header className="w-11/12 sm:w-3/6 flex justify-center items-center relative">
         <HelpIcon
           color="#fff"
           className="h-fit absolute left-0"

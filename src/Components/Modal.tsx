@@ -24,9 +24,10 @@ const Modal = () => {
       <div
         ref={dialogBodyRef}
         className={cn(
-          `px-8 text-sm tracking-wider text-center relative py-6 bg-black border-4 rounded-xl max-w-[60cqw] xl:max-w-[40cqw] gap-2 border-white min-w-[30cqw] min-h-[20cqh] flex flex-col items-center text-white`,
+          `px-8 text-sm tracking-wider text-center relative py-6 bg-black border-4 rounded-xl sm:max-w-[60cqw] xl:max-w-[40cqw] gap-1 sm:gap-2 border-white min-w-[30cqw] min-h-[20cqh] flex flex-col items-center text-white`,
           {
-            "min-w-[400px] max-w-[20cqw] ": modalType === "menu",
+            "min-w-[90cqw] sm:min-w-[400px] sm:max-w-[20cqw] ":
+              modalType === "menu",
           }
         )}
       >
@@ -49,30 +50,32 @@ const RulesModal = () => {
 
   return (
     <>
-      <h1 className="text-white w-fit text-2xl uppercase mb-4">Rules</h1>
-      <p className="text-white w-fit  mb-4">
+      <h1 className="text-white w-fit text-2xl uppercase mb-2 sm:mb-4">
+        Rules
+      </h1>
+      <p className="text-white w-fit  mb-1 sm:mb-4">
         The goal of the game is to find the hidden word within the given number
         of attempts.
       </p>
-      <p className="text-white w-fit mb-4">
+      <p className="text-white w-fit mb-1 sm:mb-4">
         Each guess must be of the correct length. After each guess, you will
         receive feedback indicating which letters are in the word and in the
         correct position, which letters are in the word but in the wrong
         position, and which letters are not in the word at all.
       </p>
-      <p className="text-white w-fit mb-4">
+      <p className="text-white w-fit mb-1 sm:mb-4">
         You can use the on-screen keyboard to enter your guesses, or you can
         type them directly into the input field. To submit a guess, press the
         "Enter" key or click the "Submit" button.
       </p>
-      <div className="flex flex-col w-full items-center gap-2 my-2">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col w-full items-center gap-1 sm:gap-2 my-2">
+        <div className="flex items-center  gap-2">
           {arr1.map((char, index) => {
             return (
               <div
                 key={index}
                 className={cn(
-                  `inline-block size-14 uppercase text-2xl bg-white/30  rounded-lg border text-center place-content-center border-gray-300`
+                  `inline-block size-8  sm:size-14 uppercase text-base sm:text-2xl bg-white/30  rounded-lg border text-center place-content-center border-gray-300`
                 )}
               >
                 {char}
@@ -80,18 +83,18 @@ const RulesModal = () => {
             );
           })}
         </div>
-        <p className="text-white w-fit text-lg">
+        <p className="text-white w-fit sm:text-lg">
           None of the letters are present in the word to guess
         </p>
       </div>
-      <div className="flex flex-col w-full items-center gap-2 mb-2">
+      <div className="flex flex-col w-full items-center gap-1 sm:gap-2 sm:mb-2">
         <div className="flex items-center gap-2">
           {arr1.map((char, index) => {
             return (
               <div
                 key={index}
                 className={cn(
-                  `inline-block size-14 uppercase text-2xl bg-white/30  rounded-lg border text-center place-content-center border-gray-300`,
+                  `inline-block size-8  sm:size-14 uppercase text-base sm:text-2xl bg-white/30  rounded-lg border text-center place-content-center border-gray-300`,
                   { "bg-green-500": index === 3 }
                 )}
               >
@@ -100,18 +103,18 @@ const RulesModal = () => {
             );
           })}
         </div>
-        <p className="text-white w-fit text-lg">
+        <p className="text-white w-fit sm:text-lg">
           The letter <strong>E</strong> is in the correct position
         </p>
       </div>
-      <div className="flex flex-col w-full items-center gap-2 mb-2">
+      <div className="flex flex-col w-full items-center gap-1 sm:gap-2 sm:mb-2">
         <div className="flex items-center gap-2">
           {arr1.map((char, index) => {
             return (
               <div
                 key={index}
                 className={cn(
-                  `inline-block size-14 uppercase text-2xl bg-white/30 rounded-lg border text-center place-content-center border-gray-300`,
+                  `inline-block size-8  sm:size-14 uppercase text-base sm:text-2xl bg-white/30 rounded-lg border text-center place-content-center border-gray-300`,
                   { "bg-yellow-500": index === 3 }
                 )}
               >
@@ -120,12 +123,12 @@ const RulesModal = () => {
             );
           })}
         </div>
-        <p className="text-white text-lg w-fit ">
+        <p className="text-white sm:text-lg w-fit ">
           The letter <strong>E</strong> is a correct letter but is in the wrong
           position
         </p>
       </div>
-      <p className="text-white w-fit mb-4">
+      <p className="text-white w-fit sm:mb-4">
         The game is over when you have found the hidden word or have run out of
         attempts. Good luck!
       </p>

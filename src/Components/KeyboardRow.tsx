@@ -18,7 +18,7 @@ const KeyboardRow = ({ keys }: KeyboardRowProps) => {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1 sm:gap-2">
       {keys.map((keyChar, index) => {
         return (
           <KeyboardCell

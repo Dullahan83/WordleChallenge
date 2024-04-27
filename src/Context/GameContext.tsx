@@ -9,6 +9,7 @@ type ContextType = {
   gameState: GameStatus;
   animationTiming: number;
   isExploding: boolean;
+  isTypingAllowed: boolean;
 };
 
 const INITIAL_STATE = {
@@ -22,6 +23,7 @@ const INITIAL_STATE = {
   validateAttempt: () => {},
   animationTiming: 300,
   isExploding: false,
+  isTypingAllowed: true,
 };
 
 import {
@@ -29,6 +31,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import useRandomWord from "../Hooks/useRandomWord";
@@ -48,9 +51,13 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const [gameState, setGameState] = useState<GameStatus>("playing");
   const [usedLetters, setUsedLetters] = useState([""]);
   const [isExploding, setIsExploding] = useState(false);
+  const [isTypingAllowed, setIsTypingAllowed] = useState(true);
   const animationTiming = 300;
 
   const { playSound } = useSoundPlaying();
+  useEffect(() => {
+    console.log(`Pour ne pas paraître nul, tapez: ${word}`);
+  }, [word]);
 
   const handleNewRound = useCallback(() => {
     const newWord = randomizeWord();
@@ -63,7 +70,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
   const addLetter = useCallback(
     (letter: string, index: number) => {
-      if (gameState !== "playing") return;
+      if (gameState !== "playing" || !isTypingAllowed) return;
       if (letter === "⌫") {
         setGuessWord((prev) => {
           const newGuessWords = [...prev];
@@ -118,19 +125,23 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const validateAttempt = useCallback(
     (index: number) => {
       if (guessWord[turn].length !== word.length) return;
+      setIsTypingAllowed(false);
       handleLetterSounds();
+      setTimeout(() => {
+        if (guessWord[index] === word) {
+          setGameState("won");
+          handleModal(true);
+          playSound("won", 0);
+        } else if (turn === 5 && guessWord[index] !== word) {
+          setGameState("lost");
+          handleModal();
+          playSound("lost", 0);
+        } else {
+          setGuessWord((prev) => [...prev, ""]);
+        }
+        setIsTypingAllowed(true);
+      }, (word.length + 1) * animationTiming);
       setTurn((prev) => prev + 1);
-      if (guessWord[index] === word) {
-        setGameState("won");
-        handleModal(true);
-        playSound("won", (word.length + 1) * animationTiming);
-      } else if (turn === 5 && guessWord[index] !== word) {
-        setGameState("lost");
-        handleModal();
-        playSound("lost", (word.length + 1) * animationTiming);
-      } else {
-        setGuessWord((prev) => [...prev, ""]);
-      }
     },
     [guessWord, word, turn]
   );
@@ -148,6 +159,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         validateAttempt,
         animationTiming,
         isExploding,
+        isTypingAllowed,
       }}
     >
       {children}

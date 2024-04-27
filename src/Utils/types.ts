@@ -5,6 +5,7 @@ export type GuessCellProps = {
   validated: boolean;
   index: number;
   row: number;
+  color: string;
 };
 
 export type KeyboardRowProps = {

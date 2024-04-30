@@ -37,3 +37,32 @@ export const isValidLetter = (
   });
   return isValid;
 };
+
+export const evalWord = (
+  guess: string[],
+  target: string[],
+  result: string[],
+  i = 0
+) => {
+  if (!guess || i === guess.length) return result;
+  const tempTarget = [...target];
+  guess.forEach((letter, index) => {
+    if (letter === tempTarget[index]) {
+      result[index] = "green";
+      tempTarget[index] = "_";
+      guess[index] = "_";
+    }
+  });
+  guess.forEach((letter, index) => {
+    if (letter !== "_") {
+      const foundIndex = tempTarget.indexOf(letter);
+      if (foundIndex !== -1) {
+        result[index] = "yellow";
+        tempTarget[foundIndex] = "_";
+      } else {
+        result[index] = "grey";
+      }
+    }
+  });
+  return result;
+};

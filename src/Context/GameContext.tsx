@@ -36,6 +36,7 @@ import {
 } from "react";
 import useRandomWord from "../Hooks/useRandomWord";
 import useSoundPlaying from "../Hooks/useSoundPlaying";
+import { evalWord } from "../Utils/func";
 import { GameStatus } from "../Utils/types";
 import { MOTS } from "../assets/wordlist";
 import { ModalContext } from "./ModalContext";
@@ -95,21 +96,30 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     setIsExploding(true);
   };
 
-  const verifyLetterState = (letter: string, index: number) => {
-    let letterState = "";
-    if (!word.includes(letter)) {
-      letterState = "absent";
-    } else if (word[index] === letter) {
-      letterState = "correct";
-    } else letterState = "incorrect";
-    return letterState;
+  const verifyLetterState = (color: string) => {
+    let source = "";
+    switch (color) {
+      case "yellow":
+        source = "incorrect";
+        break;
+      case "green":
+        source = "correct";
+        break;
+      case "grey":
+        source = "absent";
+        break;
+      default:
+        break;
+    }
+    return source;
   };
 
   const handleLetterSounds = () => {
-    for (let i = 0; i < guessWord[turn].length; i++) {
-      const letter = guessWord[turn][i];
-      playSound(verifyLetterState(letter, i), (i + 1) * animationTiming);
-    }
+    const arrColors: string[] = new Array(word.length).fill(" ");
+    evalWord(guessWord[turn]?.split(""), word?.split(""), arrColors);
+    arrColors.forEach((color, i) => {
+      playSound(verifyLetterState(color), (i + 1) * animationTiming);
+    });
   };
 
   const handleModal = (explode?: boolean) => {
